@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bookly | Simple Booking Platform</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">Bookly</a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="slots.html">Slots</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a class="button button-small" href="auth.html">Sign In</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <p class="eyebrow">Fast appointments, clear schedules</p>
+        <h1>Bookly</h1>
+        <p class="hero-copy">Find an open slot, reserve it securely, and manage every booking from one responsive workspace.</p>
+        <div class="hero-actions">
+          <a class="button" href="slots.html">Book Now</a>
+          <a class="button button-secondary" href="auth.html">Create Account</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-heading">
+        <p class="eyebrow">Why teams use it</p>
+        <h2>Booking tools that stay out of the way</h2>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">01</span>
+          <h3>Live Slot Availability</h3>
+          <p>Fetches current booking slots from your Go backend and keeps the interface focused on real availability.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">02</span>
+          <h3>Firebase Sign-In</h3>
+          <p>Email, password, and Google authentication are wired with Firebase Auth and ready for protected API calls.</p>
+        </article>
+        <article class="feature-card">
+          <span class="feature-icon" aria-hidden="true">03</span>
+          <h3>Personal Dashboard</h3>
+          <p>Logged-in users can review bookings fetched with a Firebase ID token attached to every request.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div>
+        <p class="eyebrow">Ready when your backend is</p>
+        <h2>Connect your API and start booking.</h2>
+      </div>
+      <a class="button" href="booking.html">Book Now</a>
+    </section>
+  </main>
+</body>
+</html>

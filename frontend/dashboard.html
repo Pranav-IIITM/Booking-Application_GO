@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Bookly</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">Bookly</a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="slots.html">Slots</a>
+      <a href="booking.html">Book</a>
+      <button id="logout-button" class="button button-small button-secondary" type="button">Logout</button>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="section-heading compact">
+      <p class="eyebrow">Your account</p>
+      <h1>Bookings dashboard</h1>
+      <p>Review all reservations tied to your logged-in user.</p>
+    </section>
+
+    <section class="toolbar">
+      <button id="refresh-bookings" class="button button-secondary" type="button">Refresh Bookings</button>
+      <p id="dashboard-status" class="status-message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="bookings-list" class="booking-grid" aria-live="polite"></section>
+  </main>
+
+  <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

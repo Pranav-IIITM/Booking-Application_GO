@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Slots | Bookly</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">Bookly</a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="booking.html">Book</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a class="button button-small" href="auth.html">Sign In</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="section-heading compact">
+      <p class="eyebrow">Open calendar</p>
+      <h1>Available slots</h1>
+      <p>Choose a slot to continue to the booking form.</p>
+    </section>
+
+    <section class="toolbar">
+      <button id="refresh-slots" class="button button-secondary" type="button">Refresh Slots</button>
+      <p id="slots-status" class="status-message" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="slots-list" class="slot-grid" aria-live="polite"></section>
+  </main>
+
+  <script type="module" src="js/slots.js"></script>
+</body>
+</html>

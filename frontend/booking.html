@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Slot | Bookly</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html">Bookly</a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="slots.html">Slots</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a class="button button-small" href="auth.html">Sign In</a>
+    </nav>
+  </header>
+
+  <main class="page-shell form-page">
+    <section class="section-heading compact">
+      <p class="eyebrow">Reservation</p>
+      <h1>Book a slot</h1>
+      <p>Submit your booking with an authenticated Firebase token.</p>
+    </section>
+
+    <form id="booking-form" class="booking-panel form-stack">
+      <label for="name">Name</label>
+      <input id="name" name="name" type="text" autocomplete="name" required>
+
+      <label for="date">Date</label>
+      <input id="date" name="date" type="date" required>
+
+      <label for="slot">Slot</label>
+      <select id="slot" name="slot" required>
+        <option value="">Loading slots...</option>
+      </select>
+
+      <button id="booking-submit" class="button" type="submit">Confirm Booking</button>
+      <p id="booking-status" class="status-message" role="status" aria-live="polite"></p>
+    </form>
+  </main>
+
+  <script type="module" src="js/booking.js"></script>
+</body>
+</html>
