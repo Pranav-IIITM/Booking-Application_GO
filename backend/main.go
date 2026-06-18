@@ -24,6 +24,9 @@ func main() {
 	if err := db.AutoMigrate(&models.User{}, &models.Slot{}, &models.Booking{}); err != nil {
 		log.Fatalf("auto migrate: %v", err)
 	}
+	if err := database.SeedSlots(db); err != nil {
+		log.Fatalf("seed slots: %v", err)
+	}
 
 	router := routes.NewRouter(cfg, db)
 	addr := ":" + cfg.Port

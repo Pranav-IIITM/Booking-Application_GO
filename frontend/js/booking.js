@@ -3,8 +3,6 @@ const API_BASE = "http://localhost:8080";
 import { getFreshIdToken, waitForAuthUser } from "./firebase-config.js";
 
 const form = document.querySelector("#booking-form");
-const nameInput = document.querySelector("#name");
-const dateInput = document.querySelector("#date");
 const slotSelect = document.querySelector("#slot");
 const submitButton = document.querySelector("#booking-submit");
 const statusMessage = document.querySelector("#booking-status");
@@ -58,13 +56,7 @@ async function loadSlots() {
   setStatus("Loading slots...");
 
   try {
-    await waitForAuthUser();
-    const token = await getFreshIdToken();
-    const response = await fetch(`${API_BASE}/api/slots`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const response = await fetch(`${API_BASE}/api/slots`);
 
     if (!response.ok) {
       throw new Error(`Could not load slots. Server returned ${response.status}.`);
@@ -90,8 +82,6 @@ form.addEventListener("submit", async (event) => {
   try {
     const token = await getFreshIdToken();
     const payload = {
-      name: nameInput.value.trim(),
-      date: dateInput.value,
       slotId: slotSelect.value
     };
 
@@ -105,7 +95,16 @@ form.addEventListener("submit", async (event) => {
     });
 
     if (!response.ok) {
-      throw new Error(`Booking failed. Server returned ${response.status}.`);
+      let message = `Booking failed. Server returned ${response.status}.`;
+
+      try {
+        const data = await response.json();
+        message = data.error || message;
+      } catch {
+        // Keep the status-based message when the response body is not JSON.
+      }
+
+      throw new Error(message);
     }
 
     form.reset();

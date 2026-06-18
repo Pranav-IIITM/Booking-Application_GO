@@ -25,7 +25,8 @@ function normalizeBookings(payload) {
 }
 
 function bookingTitle(booking, index) {
-  return booking.title || booking.service || booking.slotLabel || `Booking ${index + 1}`;
+  const slot = booking.slot || {};
+  return booking.title || booking.service || booking.slotLabel || slot.time || `Booking ${index + 1}`;
 }
 
 function renderBookings(bookings) {
@@ -47,6 +48,7 @@ function renderBookings(bookings) {
   const fragment = document.createDocumentFragment();
 
   bookings.forEach((booking, index) => {
+    const bookedSlot = booking.slot || {};
     const article = document.createElement("article");
     const header = document.createElement("div");
     const eyebrow = document.createElement("p");
@@ -63,9 +65,9 @@ function renderBookings(bookings) {
     header.append(eyebrow, title);
 
     meta.className = "booking-meta";
-    name.append("Name: ", booking.name || "Not provided");
-    date.append("Date: ", booking.date || booking.day || "Date to be confirmed");
-    slot.append("Slot: ", booking.slot || booking.slotId || booking.time || "Slot to be confirmed");
+    name.append("Status: ", booking.status || "confirmed");
+    date.append("Date: ", booking.date || booking.day || bookedSlot.date || "Date to be confirmed");
+    slot.append("Slot: ", bookedSlot.time || booking.slotId || booking.time || "Slot to be confirmed");
     meta.append(name, date, slot);
 
     article.append(header, meta);

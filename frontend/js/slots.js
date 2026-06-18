@@ -1,7 +1,5 @@
 const API_BASE = "http://localhost:8080";
 
-import { getFreshIdToken, waitForAuthUser } from "./firebase-config.js";
-
 const slotsList = document.querySelector("#slots-list");
 const refreshButton = document.querySelector("#refresh-slots");
 const statusMessage = document.querySelector("#slots-status");
@@ -96,13 +94,7 @@ async function fetchSlots() {
   setStatus("Loading available slots...");
 
   try {
-    await waitForAuthUser();
-    const token = await getFreshIdToken();
-    const response = await fetch(`${API_BASE}/api/slots`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const response = await fetch(`${API_BASE}/api/slots`);
 
     if (!response.ok) {
       throw new Error(`Could not load slots. Server returned ${response.status}.`);

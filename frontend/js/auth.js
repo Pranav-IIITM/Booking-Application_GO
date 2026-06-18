@@ -1,11 +1,12 @@
 const API_BASE = "http://localhost:8080";
 
 import {
-  auth,
-  loginWithEmail,
-  loginWithGoogle,
-  logoutUser,
-  signupWithEmail
+	auth,
+	loginWithEmail,
+	loginWithGoogle,
+	logoutUser,
+	signupWithEmail,
+	syncBackendUser
 } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
@@ -50,21 +51,23 @@ form.addEventListener("submit", async (event) => {
   setLoading(true);
   setStatus(authMode === "login" ? "Signing you in..." : "Creating your account...");
 
-  try {
-    const email = emailInput.value.trim();
-    const password = passwordInput.value;
+	try {
+		const email = emailInput.value.trim();
+		const password = passwordInput.value;
+		let user;
 
-    if (authMode === "login") {
-      await loginWithEmail(email, password);
-      setStatus("Signed in successfully.", "success");
-    } else {
-      await signupWithEmail(email, password);
-      setStatus("Account created successfully.", "success");
-    }
+		if (authMode === "login") {
+			user = await loginWithEmail(email, password);
+			setStatus("Signed in successfully.", "success");
+		} else {
+			user = await signupWithEmail(email, password);
+			setStatus("Account created successfully.", "success");
+		}
 
-    window.location.href = "dashboard.html";
-  } catch (error) {
-    setStatus(error.message, "error");
+		await syncBackendUser(user);
+		window.location.href = "dashboard.html";
+	} catch (error) {
+		setStatus(error.message, "error");
   } finally {
     setLoading(false);
   }
@@ -72,13 +75,14 @@ form.addEventListener("submit", async (event) => {
 
 googleButton.addEventListener("click", async () => {
   setLoading(true);
-  setStatus("Opening Google sign-in...");
+	setStatus("Opening Google sign-in...");
 
-  try {
-    await loginWithGoogle();
-    setStatus("Signed in successfully.", "success");
-    window.location.href = "dashboard.html";
-  } catch (error) {
+	try {
+		const user = await loginWithGoogle();
+		await syncBackendUser(user);
+		setStatus("Signed in successfully.", "success");
+		window.location.href = "dashboard.html";
+	} catch (error) {
     setStatus(error.message, "error");
   } finally {
     setLoading(false);

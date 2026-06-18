@@ -12,10 +12,13 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
-  authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
-  projectId: "YOUR_FIREBASE_PROJECT_ID",
-  appId: "YOUR_FIREBASE_APP_ID"
+  apiKey: "AIzaSyCrYg2tHmJR8eperOLgndykPJF-RXoZwto",
+  authDomain: "booking-platform-943f9.firebaseapp.com",
+  projectId: "booking-platform-943f9",
+  storageBucket: "booking-platform-943f9.firebasestorage.app",
+  messagingSenderId: "646294293293",
+  appId: "1:646294293293:web:fc37b5af8d8a3521ada1a4",
+  measurementId: "G-TZG35ZWDMB"
 };
 
 const TOKEN_KEY = "firebaseIdToken";
@@ -63,9 +66,9 @@ export function waitForAuthUser() {
 }
 
 export async function loginWithEmail(email, password) {
-  const credential = await signInWithEmailAndPassword(auth, email, password);
-  saveToken(await credential.user.getIdToken());
-  return credential.user;
+	const credential = await signInWithEmailAndPassword(auth, email, password);
+	saveToken(await credential.user.getIdToken());
+	return credential.user;
 }
 
 export async function signupWithEmail(email, password) {
@@ -81,8 +84,44 @@ export async function loginWithGoogle() {
 }
 
 export async function logoutUser() {
-  await signOut(auth);
-  clearToken();
+	await signOut(auth);
+	clearToken();
+}
+
+export async function syncBackendUser(user = auth.currentUser) {
+	if (!user) {
+		throw new Error("Please sign in before continuing.");
+	}
+
+	const token = await user.getIdToken();
+	saveToken(token);
+
+	const response = await fetch(`${API_BASE}/api/users/sync`, {
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${token}`,
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify({
+			name: user.displayName || "",
+			email: user.email || ""
+		})
+	});
+
+	if (!response.ok) {
+		let message = `Could not sync user. Server returned ${response.status}.`;
+
+		try {
+			const data = await response.json();
+			message = data.error || message;
+		} catch {
+			// Keep the status-based message when the response body is not JSON.
+		}
+
+		throw new Error(message);
+	}
+
+	return response.json();
 }
 
 onAuthStateChanged(auth, async (user) => {
