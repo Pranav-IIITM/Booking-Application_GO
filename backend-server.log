@@ -1,0 +1,68 @@
+
+2026/06/18 16:59:35 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/main.go:24 [33mSLOW SQL >= 200ms
+[0m[31;1m[294.719ms] [33m[rows:1][35m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND table_type = 'BASE TABLE'[0m
+
+2026/06/18 16:59:36 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/main.go:24 [33mSLOW SQL >= 200ms
+[0m[31;1m[226.743ms] [33m[rows:-][35m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = 'neondb' AND table_schema = CURRENT_SCHEMA() AND table_name = 'users'[0m
+2026/06/18 16:59:52 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000001] "GET http://localhost:8080/api/health HTTP/1.1" from [::1]:57122 - 200 15B in 0s
+2026/06/18 17:02:38 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000002] "OPTIONS http://localhost:8080/api/users/sync HTTP/1.1" from [::1]:60423 - 200 0B in 0s
+
+2026/06/18 17:02:38 [31;1mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/users.go:42 [35;1mrecord not found
+[0m[33m[262.175ms] [34;1m[rows:0][0m SELECT * FROM "users" WHERE firebase_uid = 'JWtZlL7M2Tab0VjBEXWs1t3t2FL2' ORDER BY "users"."id" LIMIT 1
+
+2026/06/18 17:02:39 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/users.go:74 [33mSLOW SQL >= 200ms
+[0m[31;1m[362.988ms] [33m[rows:1][35m INSERT INTO "users" ("firebase_uid","name","email","created_at") VALUES ('JWtZlL7M2Tab0VjBEXWs1t3t2FL2','','barbierajput378@gmail.com','2026-06-18 17:02:38.73') RETURNING "id"[0m
+2026/06/18 17:02:39 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000003] "POST http://localhost:8080/api/users/sync HTTP/1.1" from [::1]:60423 - 201 157B in 908.5452ms
+2026/06/18 17:02:39 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000004] "OPTIONS http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 0B in 0s
+2026/06/18 17:02:39 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000005] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 16B in 283.3016ms
+
+2026/06/18 17:02:47 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[287.775ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/18 17:02:47 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000006] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:60423 - 200 394B in 293.6918ms
+2026/06/18 17:03:46 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000007] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:60423 - 200 394B in 170.0642ms
+2026/06/18 17:03:51 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000008] "OPTIONS http://localhost:8080/api/book HTTP/1.1" from [::1]:60423 - 200 0B in 0s
+
+2026/06/18 17:03:52 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/bookings.go:72 [33mSLOW SQL >= 200ms
+[0m[31;1m[345.865ms] [33m[rows:1][35m SELECT * FROM "bookings" WHERE "bookings"."id" = 4 AND "bookings"."id" = 4 ORDER BY "bookings"."id" LIMIT 1[0m
+2026/06/18 17:03:52 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000009] "POST http://localhost:8080/api/book HTTP/1.1" from [::1]:60423 - 201 284B in 1.1754293s
+2026/06/18 17:04:05 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000010] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 287B in 338.4644ms
+2026/06/18 17:04:52 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000011] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:60423 - 200 394B in 161.7787ms
+2026/06/18 17:04:54 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000012] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:60423 - 200 394B in 156.2534ms
+2026/06/18 17:05:06 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000013] "POST http://localhost:8080/api/book HTTP/1.1" from [::1]:60423 - 201 283B in 773.6321ms
+
+2026/06/18 17:05:10 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/bookings.go:108 [33mSLOW SQL >= 200ms
+[0m[31;1m[252.511ms] [33m[rows:2][35m SELECT * FROM "bookings" WHERE user_id = 2 ORDER BY created_at desc[0m
+2026/06/18 17:05:10 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000014] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 431.2419ms
+2026/06/18 17:05:16 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000015] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:60423 - 200 394B in 161.8821ms
+2026/06/18 17:05:19 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000016] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 322.0576ms
+2026/06/18 17:05:34 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000017] "POST http://localhost:8080/api/users/sync HTTP/1.1" from [::1]:60423 - 200 156B in 181.6114ms
+2026/06/18 17:05:35 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000018] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 232.8087ms
+2026/06/18 17:06:35 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000019] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 308.2241ms
+2026/06/18 17:07:11 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000020] "POST http://localhost:8080/api/users/sync HTTP/1.1" from [::1]:60423 - 200 156B in 158.0061ms
+2026/06/18 17:07:12 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000021] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 247.0225ms
+2026/06/18 17:07:42 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000022] "OPTIONS http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 0B in 0s
+2026/06/18 17:07:43 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000023] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 346.5561ms
+2026/06/18 17:07:44 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000024] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 237.3035ms
+2026/06/18 17:07:48 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000025] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 330.1742ms
+2026/06/18 17:07:50 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000026] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 344.0277ms
+2026/06/18 17:07:57 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000027] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 331.7321ms
+2026/06/18 17:07:59 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000028] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 345.4752ms
+2026/06/18 17:08:00 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000029] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 252.7381ms
+2026/06/18 17:08:02 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000030] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 311.0825ms
+2026/06/18 17:08:09 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000031] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 329.8199ms
+2026/06/18 17:11:21 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000032] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 328.3141ms
+2026/06/18 17:11:23 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000033] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 326.015ms
+2026/06/18 17:11:25 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000034] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 320.7537ms
+2026/06/18 17:11:26 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000035] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 242.0119ms
+2026/06/18 17:11:44 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000036] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 329.3799ms
+2026/06/18 17:11:48 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000037] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 324.313ms
+2026/06/18 17:11:50 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000038] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 343.1523ms
+2026/06/18 17:11:55 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000039] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 345.1996ms
+2026/06/18 17:11:59 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000040] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 335.627ms
+2026/06/18 17:12:02 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000041] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 329.9294ms
+2026/06/18 17:12:07 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000042] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 333.8609ms
+2026/06/18 17:12:10 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000043] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 340.8463ms
+2026/06/18 17:12:13 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000044] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 324.5084ms
+2026/06/18 17:12:15 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000045] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 320.8138ms
+2026/06/18 17:17:23 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000046] "OPTIONS http://localhost:8080/api/bookings HTTP/1.1" from [::1]:57559 - 200 0B in 1.6798ms
+2026/06/18 17:17:23 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000047] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:57559 - 200 558B in 342.805ms
