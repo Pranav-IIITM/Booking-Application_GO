@@ -66,3 +66,4 @@
 2026/06/18 17:12:15 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000045] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:60423 - 200 558B in 320.8138ms
 2026/06/18 17:17:23 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000046] "OPTIONS http://localhost:8080/api/bookings HTTP/1.1" from [::1]:57559 - 200 0B in 1.6798ms
 2026/06/18 17:17:23 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000047] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:57559 - 200 558B in 342.805ms
+2026/06/18 17:17:30 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000048] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:57559 - 200 558B in 352.279ms
