@@ -37,6 +37,7 @@ func NewRouter(cfg *config.Config, db *gorm.DB) http.Handler {
 	slotsHandler := &handlers.SlotsHandler{DB: db}
 	usersHandler := &handlers.UsersHandler{DB: db}
 	bookingsHandler := &handlers.BookingsHandler{DB: db}
+	meHandler := &handlers.MeHandler{DB: db}
 	authMiddleware := authmw.FirebaseAuth(cfg.FirebaseAuth)
 
 	r.Get("/api/health", func(w http.ResponseWriter, r *http.Request) {
@@ -48,6 +49,7 @@ func NewRouter(cfg *config.Config, db *gorm.DB) http.Handler {
 
 	r.Group(func(protected chi.Router) {
 		protected.Use(authMiddleware)
+		protected.Get("/api/me", meHandler.Current)
 		protected.Post("/api/users/sync", usersHandler.Sync)
 		protected.Post("/api/book", bookingsHandler.Create)
 		protected.Get("/api/bookings", bookingsHandler.List)

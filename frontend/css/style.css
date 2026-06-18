@@ -473,6 +473,53 @@ select {
   display: none;
 }
 
+/* ── Auth-loading overlay ──────────────────────────────────────────── */
+
+.auth-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 180px);
+  animation: auth-fade-in 300ms ease both;
+}
+
+.auth-loading-inner {
+  display: grid;
+  place-items: center;
+  gap: 1.2rem;
+  padding: 2.5rem;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.auth-loading-inner p {
+  margin: 0;
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.spinner {
+  width: 2.2rem;
+  height: 2.2rem;
+  border: 3px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes auth-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 720px) {
   .site-header {
     align-items: flex-start;

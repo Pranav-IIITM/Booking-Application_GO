@@ -51,18 +51,120 @@ export async function getFreshIdToken() {
   return token;
 }
 
-export function waitForAuthUser() {
+/**
+ * Wait for Firebase Auth to finish restoring the persisted session from
+ * IndexedDB.  The built-in `auth.authStateReady()` (Firebase v9.8+) returns
+ * a promise that resolves **after** the initial auth state is determined.
+ *
+ * We fall back to a one-shot `onAuthStateChanged` listener for older SDK
+ * builds where `authStateReady` may not exist.
+ */
+export function waitForAuthReady() {
+  if (typeof auth.authStateReady === "function") {
+    return auth.authStateReady().then(() => auth.currentUser);
+  }
+
+  // Fallback: wait for the first onAuthStateChanged callback.
+  // NOTE: this is the *old* behaviour and still has the premature-null risk
+  // if the SDK version is truly old, but it's the best we can do.
   return new Promise((resolve) => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       unsubscribe();
-
-      if (user) {
-        saveToken(await user.getIdToken());
-      }
-
       resolve(user);
     });
   });
+}
+
+/**
+ * Kept for backward compatibility with code that still calls it.
+ * Now delegates to waitForAuthReady() so the premature-null race is fixed.
+ */
+export async function waitForAuthUser() {
+  const user = await waitForAuthReady();
+
+  if (user) {
+    saveToken(await user.getIdToken());
+  }
+
+  return user;
+}
+
+/**
+ * Master "restore session on page load" function.
+ *
+ * 1. Wait for Firebase Auth SDK to finish restoring from IndexedDB.
+ * 2. If a currentUser exists → get a fresh token → return { user, token }.
+ * 3. Otherwise, check localStorage for a previously-saved token and validate
+ *    it against the backend's GET /api/me.
+ * 4. If nothing works → return null (caller should redirect to auth.html).
+ *
+ * @returns {Promise<{user: object|null, token: string}|null>}
+ */
+export async function ensureAuth() {
+  // Step 1 — wait for Firebase to finish its IndexedDB restoration.
+  const firebaseUser = await waitForAuthReady();
+
+  if (firebaseUser) {
+    // Step 2 — Firebase recognised the persisted session.
+    const token = await firebaseUser.getIdToken();
+    saveToken(token);
+    return { user: firebaseUser, token };
+  }
+
+  // Step 3 — Firebase didn't find a session.  Try the localStorage token.
+  const storedToken = getStoredToken();
+  if (!storedToken) {
+    return null;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/api/me`, {
+      headers: { Authorization: `Bearer ${storedToken}` }
+    });
+
+    if (response.ok) {
+      // Token is still valid on the backend even though Firebase SDK lost
+      // its client-side session (rare, but possible after browser data
+      // partial-clear). Keep the token and let the caller proceed.
+      return { user: null, token: storedToken };
+    }
+
+    // Token rejected (401 / expired / invalid) — clean up.
+    clearToken();
+    return null;
+  } catch {
+    // Network error — treat as unauthenticated rather than crashing.
+    clearToken();
+    return null;
+  }
+}
+
+/**
+ * Convenience wrapper around fetch() that attaches the Authorization header.
+ * Uses getFreshIdToken() when a Firebase user is available, otherwise falls
+ * back to the stored localStorage token.
+ *
+ * @param {string} url
+ * @param {RequestInit} [options]
+ * @returns {Promise<Response>}
+ */
+export async function authFetch(url, options = {}) {
+  let token;
+
+  try {
+    token = await getFreshIdToken();
+  } catch {
+    token = getStoredToken();
+  }
+
+  if (!token) {
+    throw new Error("No auth token available. Please sign in.");
+  }
+
+  const headers = new Headers(options.headers || {});
+  headers.set("Authorization", `Bearer ${token}`);
+
+  return fetch(url, { ...options, headers });
 }
 
 export async function loginWithEmail(email, password) {

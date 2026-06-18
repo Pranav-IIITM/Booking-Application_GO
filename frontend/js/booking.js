@@ -1,7 +1,9 @@
 const API_BASE = "http://localhost:8080";
 
-import { getFreshIdToken, waitForAuthUser } from "./firebase-config.js";
+import { ensureAuth, getFreshIdToken } from "./firebase-config.js";
 
+const authLoading = document.querySelector("#auth-loading");
+const pageContent = document.querySelector("#page-content");
 const form = document.querySelector("#booking-form");
 const slotSelect = document.querySelector("#slot");
 const submitButton = document.querySelector("#booking-submit");
@@ -94,6 +96,11 @@ form.addEventListener("submit", async (event) => {
       body: JSON.stringify(payload)
     });
 
+    if (response.status === 401) {
+      window.location.href = "auth.html";
+      return;
+    }
+
     if (!response.ok) {
       let message = `Booking failed. Server returned ${response.status}.`;
 
@@ -116,4 +123,17 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
-loadSlots();
+// ── Auth gate: restore session before enabling the form ─────────────────
+(async function init() {
+  const session = await ensureAuth();
+
+  if (!session) {
+    window.location.href = "auth.html";
+    return;
+  }
+
+  // Auth confirmed — reveal the page and load slots.
+  authLoading.classList.add("hidden");
+  pageContent.classList.remove("hidden");
+  loadSlots();
+})();

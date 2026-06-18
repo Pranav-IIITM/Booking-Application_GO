@@ -17,18 +17,27 @@
   </header>
 
   <main class="page-shell">
-    <section class="section-heading compact">
-      <p class="eyebrow">Your account</p>
-      <h1>Bookings dashboard</h1>
-      <p>Review all reservations tied to your logged-in user.</p>
+    <section id="auth-loading" class="auth-loading" aria-live="polite">
+      <div class="auth-loading-inner">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Checking session&hellip;</p>
+      </div>
     </section>
 
-    <section class="toolbar">
-      <button id="refresh-bookings" class="button button-secondary" type="button">Refresh Bookings</button>
-      <p id="dashboard-status" class="status-message" role="status" aria-live="polite"></p>
-    </section>
+    <div id="page-content" class="hidden">
+      <section class="section-heading compact">
+        <p class="eyebrow">Your account</p>
+        <h1>Bookings dashboard</h1>
+        <p>Review all reservations tied to your logged-in user.</p>
+      </section>
 
-    <section id="bookings-list" class="booking-grid" aria-live="polite"></section>
+      <section class="toolbar">
+        <button id="refresh-bookings" class="button button-secondary" type="button">Refresh Bookings</button>
+        <p id="dashboard-status" class="status-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section id="bookings-list" class="booking-grid" aria-live="polite"></section>
+    </div>
   </main>
 
   <script type="module" src="js/dashboard.js"></script>

@@ -1,7 +1,9 @@
 const API_BASE = "http://localhost:8080";
 
-import { getFreshIdToken, logoutUser, waitForAuthUser } from "./firebase-config.js";
+import { ensureAuth, getFreshIdToken, logoutUser } from "./firebase-config.js";
 
+const authLoading = document.querySelector("#auth-loading");
+const pageContent = document.querySelector("#page-content");
 const bookingsList = document.querySelector("#bookings-list");
 const refreshButton = document.querySelector("#refresh-bookings");
 const logoutButton = document.querySelector("#logout-button");
@@ -83,19 +85,17 @@ async function fetchBookings() {
   setStatus("Loading your bookings...");
 
   try {
-    const user = await waitForAuthUser();
-
-    if (!user) {
-      window.location.href = "auth.html";
-      return;
-    }
-
     const token = await getFreshIdToken();
     const response = await fetch(`${API_BASE}/api/bookings`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
     });
+
+    if (response.status === 401) {
+      window.location.href = "auth.html";
+      return;
+    }
 
     if (!response.ok) {
       throw new Error(`Could not load bookings. Server returned ${response.status}.`);
@@ -119,4 +119,17 @@ logoutButton.addEventListener("click", async () => {
   window.location.href = "auth.html";
 });
 
-fetchBookings();
+// ── Auth gate: restore session before loading data ──────────────────────
+(async function init() {
+  const session = await ensureAuth();
+
+  if (!session) {
+    window.location.href = "auth.html";
+    return;
+  }
+
+  // Auth confirmed — reveal the page and fetch data.
+  authLoading.classList.add("hidden");
+  pageContent.classList.remove("hidden");
+  fetchBookings();
+})();

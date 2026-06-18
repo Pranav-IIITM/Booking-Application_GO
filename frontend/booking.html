@@ -17,21 +17,30 @@
   </header>
 
   <main class="page-shell form-page">
-    <section class="section-heading compact">
-      <p class="eyebrow">Reservation</p>
-      <h1>Book a slot</h1>
-      <p>Submit your booking with an authenticated Firebase token.</p>
+    <section id="auth-loading" class="auth-loading" aria-live="polite">
+      <div class="auth-loading-inner">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Checking session&hellip;</p>
+      </div>
     </section>
 
-    <form id="booking-form" class="booking-panel form-stack">
-      <label for="slot">Slot</label>
-      <select id="slot" name="slot" required>
-        <option value="">Loading slots...</option>
-      </select>
+    <div id="page-content" class="hidden">
+      <section class="section-heading compact">
+        <p class="eyebrow">Reservation</p>
+        <h1>Book a slot</h1>
+        <p>Submit your booking with an authenticated Firebase token.</p>
+      </section>
 
-      <button id="booking-submit" class="button" type="submit">Confirm Booking</button>
-      <p id="booking-status" class="status-message" role="status" aria-live="polite"></p>
-    </form>
+      <form id="booking-form" class="booking-panel form-stack">
+        <label for="slot">Slot</label>
+        <select id="slot" name="slot" required>
+          <option value="">Loading slots...</option>
+        </select>
+
+        <button id="booking-submit" class="button" type="submit">Confirm Booking</button>
+        <p id="booking-status" class="status-message" role="status" aria-live="polite"></p>
+      </form>
+    </div>
   </main>
 
   <script type="module" src="js/booking.js"></script>
