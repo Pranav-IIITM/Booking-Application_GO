@@ -67,3 +67,24 @@
 2026/06/18 17:17:23 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000046] "OPTIONS http://localhost:8080/api/bookings HTTP/1.1" from [::1]:57559 - 200 0B in 1.6798ms
 2026/06/18 17:17:23 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000047] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:57559 - 200 558B in 342.805ms
 2026/06/18 17:17:30 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000048] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:57559 - 200 558B in 352.279ms
+
+2026/06/18 17:27:40 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[1399.549ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/18 17:27:40 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000049] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 1.4062459s
+
+2026/06/18 17:27:45 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[204.843ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/18 17:27:45 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000050] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 205.3509ms
+2026/06/18 17:27:47 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000051] "OPTIONS http://localhost:8080/api/book HTTP/1.1" from [::1]:63335 - 200 0B in 0s
+
+2026/06/18 17:27:49 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/bookings.go:72 [33mSLOW SQL >= 200ms
+[0m[31;1m[324.305ms] [33m[rows:1][35m SELECT * FROM "bookings" WHERE "bookings"."id" = 6 AND "bookings"."id" = 6 ORDER BY "bookings"."id" LIMIT 1[0m
+2026/06/18 17:27:49 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000052] "POST http://localhost:8080/api/book HTTP/1.1" from [::1]:63335 - 201 284B in 2.3810482s
+2026/06/18 17:28:01 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000053] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 156.5875ms
+2026/06/18 17:28:26 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000054] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 159.589ms
+2026/06/18 17:28:41 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000055] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 169.8251ms
+2026/06/18 17:28:41 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000056] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 76.6189ms
+2026/06/18 17:28:47 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000057] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 187.2467ms
+2026/06/18 17:28:52 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000058] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 161.6589ms
+2026/06/18 17:28:56 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000059] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 172.2902ms
+2026/06/18 17:29:05 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000060] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 158.7873ms
