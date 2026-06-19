@@ -10,33 +10,119 @@
   <header class="site-header">
     <a class="brand" href="index.html">Bookly</a>
     <nav class="nav-links" aria-label="Primary navigation">
-      <a href="slots.html">Slots</a>
-      <a href="booking.html">Book</a>
-      <button id="logout-button" class="button button-small button-secondary" type="button">Logout</button>
+      <a href="slots.html">Book Slot</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a id="nav-auth-button" class="button button-small" href="auth.html">Sign In</a>
     </nav>
   </header>
 
-  <main class="page-shell">
-    <section id="auth-loading" class="auth-loading" aria-live="polite">
-      <div class="auth-loading-inner">
-        <div class="spinner" aria-hidden="true"></div>
-        <p>Checking session&hellip;</p>
+  <main>
+    <!-- Logged Out Preview -->
+    <div id="dashboard-preview" class="hidden dashboard-wrapper">
+      <div class="dashboard-card" style="padding: 40px; text-align: center;">
+        <div style="font-size: 52px; margin-bottom: 20px;">📅</div>
+        <h2 style="margin: 0 0 12px 0; font-size: 20px; font-weight: 600;">Welcome to Bookly</h2>
+        <p style="margin: 0 0 28px 0; color: var(--text-muted); font-size: 15px;">Sign in to manage your bookings and view your full schedule.</p>
+        <div style="display: flex; gap: 14px; justify-content: center;">
+          <a class="button" href="auth.html">Sign In</a>
+          <a class="button button-secondary" href="slots.html">Browse Slots</a>
+        </div>
       </div>
-    </section>
+    </div>
 
-    <div id="page-content" class="hidden">
-      <section class="section-heading compact">
-        <p class="eyebrow">Your account</p>
-        <h1>Bookings dashboard</h1>
-        <p>Review all reservations tied to your logged-in user.</p>
-      </section>
+    <!-- Logged In Dashboard -->
+    <div id="dashboard-content" class="hidden dashboard-wrapper">
+      <!-- Row 1: Header -->
+      <div class="dashboard-header">
+        <div class="dashboard-header-left">
+          <h1>Hello, User 👋</h1>
+          <p>Manage bookings and availability</p>
+        </div>
+        <a class="button" href="slots.html">+ Book Slot</a>
+      </div>
 
-      <section class="toolbar">
-        <button id="refresh-bookings" class="button button-secondary" type="button">Refresh Bookings</button>
-        <p id="dashboard-status" class="status-message" role="status" aria-live="polite"></p>
-      </section>
+      <!-- Row 2: Stats Grid -->
+      <div class="dashboard-stats">
+        <div class="dashboard-stat-card">
+          <div class="dashboard-stat-icon">📊</div>
+          <div class="dashboard-stat-content">
+            <p class="dashboard-stat-value" id="total-bookings">0</p>
+            <p class="dashboard-stat-label">Total Bookings</p>
+          </div>
+        </div>
+        <div class="dashboard-stat-card">
+          <div class="dashboard-stat-icon">📅</div>
+          <div class="dashboard-stat-content">
+            <p class="dashboard-stat-value" id="upcoming-bookings">0</p>
+            <p class="dashboard-stat-label">Upcoming</p>
+          </div>
+        </div>
+        <div class="dashboard-stat-card">
+          <div class="dashboard-stat-icon">✅</div>
+          <div class="dashboard-stat-content">
+            <p class="dashboard-stat-value" id="completed-bookings">0</p>
+            <p class="dashboard-stat-label">Completed</p>
+          </div>
+        </div>
+        <div class="dashboard-stat-card">
+          <div class="dashboard-stat-icon">🕐</div>
+          <div class="dashboard-stat-content">
+            <p class="dashboard-stat-value" id="available-slots">12</p>
+            <p class="dashboard-stat-label">Available Slots</p>
+          </div>
+        </div>
+      </div>
 
-      <section id="bookings-list" class="booking-grid" aria-live="polite"></section>
+      <!-- Row 3: Main Area -->
+      <div class="dashboard-main">
+        <!-- Left: Upcoming Bookings -->
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <h2>Upcoming Bookings</h2>
+          </div>
+          <div class="dashboard-card-body" id="bookings-list">
+            <!-- Bookings will be rendered here -->
+          </div>
+        </div>
+
+        <!-- Right: Quick Actions + Mini Calendar -->
+        <div class="dashboard-card">
+          <div class="dashboard-card-header">
+            <h2>Quick Actions</h2>
+          </div>
+          <div class="dashboard-card-body">
+            <div class="quick-actions-list">
+              <a href="slots.html" class="quick-action-btn">
+                <span class="quick-action-icon">➕</span>
+                <span>Book Slot</span>
+              </a>
+              <a href="slots.html" class="quick-action-btn">
+                <span class="quick-action-icon">📋</span>
+                <span>View Schedule</span>
+              </a>
+              <div class="quick-action-btn" style="cursor: not-allowed; opacity: 0.6;">
+                <span class="quick-action-icon">👤</span>
+                <span>Account</span>
+              </div>
+            </div>
+
+            <!-- Mini Calendar -->
+            <div class="mini-calendar" id="mini-calendar">
+              <!-- Mini calendar will be rendered here -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: Activity Timeline -->
+      <div class="dashboard-card">
+        <div class="dashboard-card-header">
+          <h2>Recent Activity</h2>
+        </div>
+        <div class="dashboard-card-body activity-timeline" id="activity-timeline">
+          <!-- Activity will be rendered here -->
+        </div>
+      </div>
     </div>
   </main>
 

@@ -10,56 +10,105 @@
   <header class="site-header">
     <a class="brand" href="index.html">Bookly</a>
     <nav class="nav-links" aria-label="Primary navigation">
-      <a href="slots.html">Slots</a>
+      <a href="slots.html">Book Slot</a>
       <a href="dashboard.html">Dashboard</a>
       <a class="button button-small" href="auth.html">Sign In</a>
     </nav>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="hero-content">
-        <p class="eyebrow">Fast appointments, clear schedules</p>
-        <h1>Bookly</h1>
-        <p class="hero-copy">Find an open slot, reserve it securely, and manage every booking from one responsive workspace.</p>
-        <div class="hero-actions">
-          <a class="button" href="slots.html">Book Now</a>
-          <a class="button button-secondary" href="auth.html">Create Account</a>
+    <section id="auth-loading" class="auth-loading" aria-live="polite">
+      <div class="auth-loading-inner">
+        <div class="spinner" aria-hidden="true"></div>
+        <p>Checking session&hellip;</p>
+      </div>
+    </section>
+
+    <div id="page-content" class="hidden">
+      <!-- Hero Section -->
+      <section class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">Scheduling made simple</p>
+          <h1>Book your next appointment in seconds</h1>
+          <p class="hero-copy">Find an open slot, reserve it securely, and manage all your bookings from one clean, intuitive dashboard.</p>
+          <div class="hero-actions">
+            <a class="button" href="slots.html">Book Slot</a>
+            <a class="button button-secondary" href="dashboard.html">Explore Dashboard</a>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section">
-      <div class="section-heading">
-        <p class="eyebrow">Why teams use it</p>
-        <h2>Booking tools that stay out of the way</h2>
-      </div>
-      <div class="feature-grid">
-        <article class="feature-card">
-          <span class="feature-icon" aria-hidden="true">01</span>
-          <h3>Live Slot Availability</h3>
-          <p>Fetches current booking slots from your Go backend and keeps the interface focused on real availability.</p>
-        </article>
-        <article class="feature-card">
-          <span class="feature-icon" aria-hidden="true">02</span>
-          <h3>Firebase Sign-In</h3>
-          <p>Email, password, and Google authentication are wired with Firebase Auth and ready for protected API calls.</p>
-        </article>
-        <article class="feature-card">
-          <span class="feature-icon" aria-hidden="true">03</span>
-          <h3>Personal Dashboard</h3>
-          <p>Logged-in users can review bookings fetched with a Firebase ID token attached to every request.</p>
-        </article>
-      </div>
-    </section>
+      <!-- Features Section -->
+      <section class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Why choose Bookly</p>
+          <h2>Everything you need to manage appointments</h2>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card">
+            <span class="feature-icon" aria-hidden="true">⚡</span>
+            <h3>Instant Booking</h3>
+            <p>Select your preferred time slot and confirm in seconds with our fast, reliable booking system.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon" aria-hidden="true">📅</span>
+            <h3>Live Availability</h3>
+            <p>Always see real-time slot availability, so you never double-book or miss an opening.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon" aria-hidden="true">📊</span>
+            <h3>Easy Dashboard</h3>
+            <p>View and manage all your upcoming appointments in one clean, organized dashboard.</p>
+          </article>
+          <article class="feature-card">
+            <span class="feature-icon" aria-hidden="true">🔒</span>
+            <h3>Secure Access</h3>
+            <p>Your data is protected with Firebase authentication and encrypted connections.</p>
+          </article>
+        </div>
+      </section>
 
-    <section class="cta-band">
-      <div>
-        <p class="eyebrow">Ready when your backend is</p>
-        <h2>Connect your API and start booking.</h2>
-      </div>
-      <a class="button" href="booking.html">Book Now</a>
-    </section>
+      <!-- How It Works -->
+      <section class="section">
+        <div class="section-heading">
+          <p class="eyebrow">Simple 3-step process</p>
+          <h2>How Bookly works</h2>
+        </div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h3>Choose Your Slot</h3>
+            <p>Browse available times and select the one that works best for you.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h3>Confirm Your Booking</h3>
+            <p>Complete the reservation process with just a few clicks.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <h3>Manage in Dashboard</h3>
+            <p>View, track, and manage all your appointments in your personal dashboard.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Band -->
+      <section class="cta-band">
+        <div>
+          <p class="eyebrow">Ready to get started</p>
+          <h2>Start booking your appointments today</h2>
+        </div>
+        <a class="button" href="slots.html">Book Now</a>
+      </section>
+    </div>
   </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>&copy; 2024 Bookly. All rights reserved.</p>
+  </footer>
+
+  <script type="module" src="js/index.js"></script>
 </body>
 </html>

@@ -1,0 +1,9 @@
+warning: in the working copy of 'frontend/js/firebase-config.js', LF will be replaced by CRLF the next time Git touches it
+ backend/routes/routes.go       |   8 [32m+[m[31m-[m
+ frontend/index.html            |  89 [32m++++++++++++[m[31m----------[m
+ frontend/js/auth.js            |  21 [32m++++++[m
+ frontend/js/booking.js         |  22 [32m+++[m[31m---[m
+ frontend/js/dashboard.js       |  28 [32m+++[m[31m----[m
+ frontend/js/firebase-config.js | 163 [32m+++++++++++++++++[m[31m------------------------[m
+ frontend/js/index.js           |  20 [32m+++++[m
+ 7 files changed, 193 insertions(+), 158 deletions(-)

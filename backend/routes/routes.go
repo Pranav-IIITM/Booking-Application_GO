@@ -7,6 +7,7 @@ import (
 	"booking-backend/config"
 	"booking-backend/handlers"
 	authmw "booking-backend/middleware"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -21,7 +22,13 @@ func NewRouter(cfg *config.Config, db *gorm.DB) http.Handler {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000", "http://127.0.0.1:5500"},
+		AllowedOrigins: []string{
+			"http://localhost:3000",
+			"http://127.0.0.1:5500",
+			"http://localhost:5500",
+			"http://localhost:5501",
+			"http://127.0.0.1:5501",
+		},
 		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
 		AllowCredentials: true,

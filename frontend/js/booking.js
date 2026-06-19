@@ -1,6 +1,4 @@
-const API_BASE = "http://localhost:8080";
-
-import { ensureAuth, getFreshIdToken } from "./firebase-config.js";
+import { API_BASE, authFetch, ensureAuth, handleAuthRejected } from "./firebase-config.js";
 
 const authLoading = document.querySelector("#auth-loading");
 const pageContent = document.querySelector("#page-content");
@@ -82,22 +80,19 @@ form.addEventListener("submit", async (event) => {
   setStatus("Submitting booking...");
 
   try {
-    const token = await getFreshIdToken();
     const payload = {
       slotId: slotSelect.value
     };
 
-    const response = await fetch(`${API_BASE}/api/book`, {
+    const response = await authFetch(`${API_BASE}/api/book`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(payload)
     });
 
-    if (response.status === 401) {
-      window.location.href = "auth.html";
+    if (handleAuthRejected(response)) {
       return;
     }
 
@@ -125,7 +120,16 @@ form.addEventListener("submit", async (event) => {
 
 // ── Auth gate: restore session before enabling the form ─────────────────
 (async function init() {
-  const session = await ensureAuth();
+  let session;
+
+  try {
+    session = await ensureAuth();
+  } catch (error) {
+    authLoading.classList.add("hidden");
+    pageContent.classList.remove("hidden");
+    setStatus(error.message, "error");
+    return;
+  }
 
   if (!session) {
     window.location.href = "auth.html";

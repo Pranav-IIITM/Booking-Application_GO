@@ -190,6 +190,14 @@ export async function logoutUser() {
 	clearToken();
 }
 
+export function handleAuthRejected(response) {
+  if (response.status === 401) {
+    window.location.href = "auth.html";
+    return true;
+  }
+  return false;
+}
+
 export async function syncBackendUser(user = auth.currentUser) {
 	if (!user) {
 		throw new Error("Please sign in before continuing.");
