@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
 :root {
   --primary: #0f766e;
   --primary-dark: #115e59;
@@ -12,6 +14,7 @@
   --success: #16764f;
   --shadow: 0 22px 60px rgba(23, 32, 30, 0.1);
   --shadow-soft: 0 10px 30px rgba(23, 32, 30, 0.07);
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 * {
@@ -25,7 +28,7 @@ body {
     linear-gradient(180deg, rgba(237, 244, 242, 0.72), rgba(245, 247, 246, 0) 420px),
     var(--background);
   color: var(--text);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.5;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -159,16 +162,50 @@ select {
   width: 100%;
 }
 
+/* Hero & Content Keyframe Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kenBurns {
+  0% {
+    transform: scale(1.02) translate(0, 0);
+  }
+  50% {
+    transform: scale(1.08) translate(-0.5%, 0.5%);
+  }
+  100% {
+    transform: scale(1.02) translate(0, 0);
+  }
+}
+
 .hero {
   position: relative;
   min-height: calc(100vh - 68px);
   display: grid;
-  align-items: end;
+  align-items: center;
   padding: clamp(3rem, 8vw, 6.5rem);
-  background:
-    linear-gradient(90deg, rgba(9, 48, 45, 0.9), rgba(15, 118, 110, 0.58) 48%, rgba(23, 32, 30, 0.16)),
-    url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=80") center/cover;
   color: #ffffff;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(135deg, rgba(9, 48, 45, 0.95) 0%, rgba(15, 118, 110, 0.75) 50%, rgba(23, 32, 30, 0.45) 100%),
+    url("https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=80") center/cover;
+  z-index: 0;
+  animation: kenBurns 24s ease-in-out infinite alternate;
+  pointer-events: none;
 }
 
 .hero::after {
@@ -178,48 +215,58 @@ select {
   height: 34%;
   background: linear-gradient(180deg, rgba(245, 247, 246, 0), var(--background));
   pointer-events: none;
+  z-index: 1;
 }
 
 .hero-content {
   position: relative;
-  z-index: 1;
-  max-width: 720px;
+  z-index: 2;
+  max-width: 760px;
   padding-bottom: clamp(1rem, 4vw, 2.5rem);
 }
 
 .hero h1 {
   margin: 0;
-  font-size: clamp(4rem, 11vw, 8.5rem);
+  font-size: clamp(3.5rem, 9.5vw, 6.8rem);
   line-height: 0.95;
-  letter-spacing: 0;
+  letter-spacing: -0.03em;
+  font-weight: 800;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
 }
 
 .hero-copy {
-  max-width: 620px;
-  margin: 1.4rem 0 0;
-  color: rgba(255, 255, 255, 0.92);
-  font-size: clamp(1.1rem, 2.2vw, 1.45rem);
+  max-width: 650px;
+  margin: 1.6rem 0 0;
+  color: rgba(255, 255, 255, 0.96);
+  font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+  line-height: 1.6;
+  font-weight: 400;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
   text-wrap: balance;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
-  margin-top: 2rem;
+  gap: 1rem;
+  margin-top: 2.2rem;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
 }
 
 .eyebrow {
-  margin: 0 0 0.45rem;
+  margin: 0 0 0.5rem;
   color: var(--accent);
-  font-size: 0.78rem;
-  font-weight: 900;
-  letter-spacing: 0;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
 .hero .eyebrow {
   color: #f8c16b;
+  font-weight: 600;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .section,
