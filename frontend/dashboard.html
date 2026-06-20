@@ -3,7 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your personal Bookly dashboard — view and manage all your reservations.">
   <title>Dashboard | Bookly</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -17,6 +21,16 @@
   </header>
 
   <main class="page-shell">
+    <!-- User profile section -->
+    <section id="user-profile" class="user-profile" aria-label="User profile" hidden>
+      <div class="profile-avatar" id="profile-avatar" aria-hidden="true"></div>
+      <div class="profile-info">
+        <p class="profile-name" id="profile-name"></p>
+        <p class="profile-email" id="profile-email"></p>
+      </div>
+      <button id="profile-logout" class="button button-ghost button-small" type="button">Sign out</button>
+    </section>
+
     <section class="section-heading compact">
       <p class="eyebrow">Your account</p>
       <h1>Bookings dashboard</h1>
