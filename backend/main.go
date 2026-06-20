@@ -1,10 +1,12 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 
 	"booking-backend/config"
+	"booking-backend/db"
 	"booking-backend/routes"
 )
 
@@ -20,6 +22,11 @@ func main() {
 	}
 	defer firestoreClient.Close()
 	cfg.FirebaseAuth = authClient
+
+	ctx := context.Background()
+	if err := db.SeedSlots(ctx, firestoreClient); err != nil {
+		log.Printf("seed slots: %v", err)
+	}
 
 	router := routes.NewRouter(cfg, firestoreClient)
 	addr := ":" + cfg.Port
