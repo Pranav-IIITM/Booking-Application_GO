@@ -88,3 +88,122 @@
 2026/06/18 17:28:52 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000058] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 161.6589ms
 2026/06/18 17:28:56 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000059] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 172.2902ms
 2026/06/18 17:29:05 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000060] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:63335 - 200 394B in 158.7873ms
+2026/06/19 22:32:25 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000061] "OPTIONS http://localhost:8080/api/bookings HTTP/1.1" from [::1]:55641 - 200 0B in 0s
+
+2026/06/19 22:32:27 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/bookings.go:98 [33mSLOW SQL >= 200ms
+[0m[31;1m[2173.193ms] [33m[rows:1][35m SELECT * FROM "users" WHERE firebase_uid = 'JWtZlL7M2Tab0VjBEXWs1t3t2FL2' ORDER BY "users"."id" LIMIT 1[0m
+
+2026/06/19 22:32:28 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/bookings.go:108 [33mSLOW SQL >= 200ms
+[0m[31;1m[232.212ms] [33m[rows:2][35m SELECT * FROM "slots" WHERE "slots"."id" IN (1,5)[0m
+
+2026/06/19 22:32:28 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/bookings.go:108 [33mSLOW SQL >= 200ms
+[0m[31;1m[551.519ms] [33m[rows:3][35m SELECT * FROM "bookings" WHERE user_id = 2 ORDER BY created_at desc[0m
+2026/06/19 22:32:28 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000062] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:55641 - 200 830B in 3.2747878s
+
+2026/06/19 22:32:30 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/bookings.go:98 [33mSLOW SQL >= 200ms
+[0m[31;1m[203.983ms] [33m[rows:1][35m SELECT * FROM "users" WHERE firebase_uid = 'JWtZlL7M2Tab0VjBEXWs1t3t2FL2' ORDER BY "users"."id" LIMIT 1[0m
+2026/06/19 22:32:30 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000063] "GET http://localhost:8080/api/bookings HTTP/1.1" from [::1]:55641 - 200 830B in 424.3233ms
+
+2026/06/19 22:33:48 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[293.358ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:33:48 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000064] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 337.0676ms
+2026/06/19 22:34:44 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000065] "OPTIONS http://localhost:8080/api/users/sync HTTP/1.1" from [::1]:55641 - 200 0B in 0s
+
+2026/06/19 22:34:56 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[201.411ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:34:56 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000066] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 280.2186ms
+2026/06/19 22:35:00 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000067] "OPTIONS http://localhost:8080/api/bookings HTTP/1.1" from [::1]:55641 - 200 0B in 0s
+
+2026/06/19 22:35:12 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[205.946ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:35:12 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000068] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 207.0552ms
+2026/06/19 22:35:44 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000069] "OPTIONS http://localhost:8080/api/bookings HTTP/1.1" from [::1]:55641 - 200 0B in 0s
+
+2026/06/19 22:35:47 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[207.640ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:35:47 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000070] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 219.573ms
+
+2026/06/19 22:35:50 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[210.940ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:35:50 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000071] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 239.0207ms
+
+2026/06/19 22:36:56 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[214.228ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:36:56 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000072] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 225.8887ms
+2026/06/19 22:37:43 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000073] "OPTIONS http://localhost:8080/api/users/sync HTTP/1.1" from [::1]:55641 - 200 0B in 0s
+
+2026/06/19 22:37:49 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[204.009ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:37:49 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000074] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 205.682ms
+2026/06/19 22:38:44 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000075] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 199.5129ms
+
+2026/06/19 22:38:51 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[221.020ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:38:51 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000076] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 225.2426ms
+
+2026/06/19 22:38:58 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[202.851ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:38:58 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000077] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 203.5395ms
+
+2026/06/19 22:39:02 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[207.559ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:39:02 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000078] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 255.8067ms
+2026/06/19 22:39:08 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000079] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 195.179ms
+
+2026/06/19 22:39:33 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[211.757ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:39:33 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000080] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 255.6587ms
+
+2026/06/19 22:39:40 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[201.904ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:39:40 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000081] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 238.7979ms
+
+2026/06/19 22:39:46 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[206.089ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:39:46 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000082] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 231.8591ms
+
+2026/06/19 22:40:24 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[224.615ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:40:24 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000083] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 225.7476ms
+
+2026/06/19 22:41:40 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[204.460ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:41:40 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000084] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 207.4669ms
+
+2026/06/19 22:41:43 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[220.523ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:41:43 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000085] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 222.1306ms
+
+2026/06/19 22:41:46 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[211.612ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:41:46 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000086] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 212.1256ms
+
+2026/06/19 22:41:51 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[212.023ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:41:51 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000087] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 213.1755ms
+
+2026/06/19 22:41:59 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[210.511ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:41:59 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000088] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 213.0416ms
+
+2026/06/19 22:44:56 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[214.725ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:44:56 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000089] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 253.8209ms
+2026/06/19 22:44:58 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000090] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 199.1608ms
+
+2026/06/19 22:44:59 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[203.028ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:44:59 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000091] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 207.2035ms
+
+2026/06/19 22:45:00 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[236.411ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:45:01 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000092] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 281.0139ms
+2026/06/19 22:45:01 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000093] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 100.5311ms
+2026/06/19 22:45:02 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000094] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 106.554ms
+2026/06/19 22:45:02 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000095] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 122.5885ms
+2026/06/19 22:45:03 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000096] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 106.1019ms
+
+2026/06/19 22:45:04 [32mE:/Pranav/OpenSource/Booking-Application_GO/backend/handlers/slots.go:16 [33mSLOW SQL >= 200ms
+[0m[31;1m[227.936ms] [33m[rows:5][35m SELECT * FROM "slots" WHERE booked_count < capacity ORDER BY date asc, time asc[0m
+2026/06/19 22:45:04 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000097] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 229.5543ms
+2026/06/19 22:46:09 [DESKTOP-JSSPLJ1/H7K0JcdWtg-000098] "GET http://localhost:8080/api/slots HTTP/1.1" from [::1]:55641 - 200 394B in 197.0957ms
