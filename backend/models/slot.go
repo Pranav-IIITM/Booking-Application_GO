@@ -1,9 +1,9 @@
 package models
 
 type Slot struct {
-	ID          uint   `gorm:"primaryKey" json:"id"`
-	Date        string `gorm:"not null" json:"date"`
-	Time        string `gorm:"not null" json:"time"`
-	Capacity    int    `gorm:"not null" json:"capacity"`
-	BookedCount int    `gorm:"not null;default:0" json:"bookedCount"`
+	ID          string `firestore:"-" json:"id"`
+	Date        string `firestore:"date" json:"date"`
+	Time        string `firestore:"time" json:"time"`
+	Capacity    int    `firestore:"capacity" json:"capacity"`
+	BookedCount int    `firestore:"bookedCount" json:"bookedCount"`
 }

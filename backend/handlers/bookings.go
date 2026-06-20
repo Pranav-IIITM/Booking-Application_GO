@@ -1,20 +1,25 @@
 package handlers
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
-	"strconv"
+	"sort"
+	"strings"
+	"time"
 
 	"booking-backend/middleware"
 	"booking-backend/models"
-	"gorm.io/gorm"
-	"gorm.io/gorm/clause"
+	"cloud.google.com/go/firestore"
+	"google.golang.org/api/iterator"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type BookingsHandler struct {
-	DB *gorm.DB
+	Firestore *firestore.Client
 }
 
 type createBookingRequest struct {
@@ -34,50 +39,67 @@ func (h *BookingsHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	slotID, err := parseUintField(request.SlotID, "slotId")
+	slotID, err := parseIDField(request.SlotID, "slotId")
 	if err != nil {
 		writeError(w, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	var booking models.Booking
-	err = h.DB.Transaction(func(tx *gorm.DB) error {
+	err = h.Firestore.RunTransaction(r.Context(), func(ctx context.Context, tx *firestore.Transaction) error {
+		userQuery := h.Firestore.Collection("users").Where("firebase_uid", "==", firebaseUID).Limit(1)
+		userSnapshots, err := tx.Documents(userQuery).GetAll()
+		if err != nil {
+			return err
+		}
+		if len(userSnapshots) == 0 {
+			return errUserNotFound
+		}
+		userSnapshot := userSnapshots[0]
 		var user models.User
-		if err := tx.Where("firebase_uid = ?", firebaseUID).First(&user).Error; err != nil {
+		if err := userSnapshot.DataTo(&user); err != nil {
 			return err
 		}
+		user.ID = userSnapshot.Ref.ID
 
-		var slot models.Slot
-		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).First(&slot, slotID).Error; err != nil {
+		slotRef := h.Firestore.Collection("slots").Doc(slotID)
+		slotSnapshot, err := tx.Get(slotRef)
+		if err != nil {
 			return err
 		}
+		var slot models.Slot
+		if err := slotSnapshot.DataTo(&slot); err != nil {
+			return err
+		}
+		slot.ID = slotSnapshot.Ref.ID
 		if slot.BookedCount >= slot.Capacity {
 			return errSlotFull
 		}
 
+		bookingRef := h.Firestore.Collection("bookings").NewDoc()
 		booking = models.Booking{
-			UserID: user.ID,
-			SlotID: slot.ID,
-			Status: "confirmed",
+			ID:        bookingRef.ID,
+			UserID:    user.ID,
+			SlotID:    slot.ID,
+			Status:    "confirmed",
+			CreatedAt: time.Now().UTC(),
+			Slot:      &slot,
 		}
-		if err := tx.Create(&booking).Error; err != nil {
+		if err := tx.Set(bookingRef, booking); err != nil {
 			return err
 		}
 
-		slot.BookedCount++
-		if err := tx.Model(&slot).Update("booked_count", slot.BookedCount).Error; err != nil {
-			return err
-		}
-
-		return tx.Preload("Slot").First(&booking, booking.ID).Error
+		return tx.Update(slotRef, []firestore.Update{
+			{Path: "bookedCount", Value: firestore.Increment(1)},
+		})
 	})
 
 	if err != nil {
 		switch {
-		case errors.Is(err, gorm.ErrRecordNotFound):
+		case status.Code(err) == codes.NotFound, errors.Is(err, errUserNotFound):
 			writeError(w, http.StatusNotFound, "user or slot not found")
 		case errors.Is(err, errSlotFull):
-			writeError(w, http.StatusConflict, "slot is already full")
+			writeError(w, http.StatusBadRequest, "slot is already full")
 		default:
 			writeError(w, http.StatusInternalServerError, "could not create booking")
 		}
@@ -94,49 +116,92 @@ func (h *BookingsHandler) List(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user models.User
-	if err := h.DB.Where("firebase_uid = ?", firebaseUID).First(&user).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			writeError(w, http.StatusNotFound, "user not found")
-			return
-		}
+	userIter := h.Firestore.Collection("users").Where("firebase_uid", "==", firebaseUID).Limit(1).Documents(r.Context())
+	userSnapshot, err := userIter.Next()
+	userIter.Stop()
+	if err == iterator.Done {
+		writeError(w, http.StatusNotFound, "user not found")
+		return
+	}
+	if err != nil {
 		writeError(w, http.StatusInternalServerError, "could not load user")
 		return
 	}
-
-	var bookings []models.Booking
-	if err := h.DB.Where("user_id = ?", user.ID).Preload("Slot").Order("created_at desc").Find(&bookings).Error; err != nil {
-		writeError(w, http.StatusInternalServerError, "could not load bookings")
+	var user models.User
+	if err := userSnapshot.DataTo(&user); err != nil {
+		writeError(w, http.StatusInternalServerError, "could not load user")
 		return
 	}
+	user.ID = userSnapshot.Ref.ID
+
+	var bookings []models.Booking
+	iter := h.Firestore.Collection("bookings").Where("userID", "==", user.ID).Documents(r.Context())
+	defer iter.Stop()
+
+	for {
+		snapshot, err := iter.Next()
+		if err == iterator.Done {
+			break
+		}
+		if err != nil {
+			writeError(w, http.StatusInternalServerError, "could not load bookings")
+			return
+		}
+
+		var booking models.Booking
+		if err := snapshot.DataTo(&booking); err != nil {
+			writeError(w, http.StatusInternalServerError, "could not load bookings")
+			return
+		}
+		booking.ID = snapshot.Ref.ID
+
+		slotSnapshot, err := h.Firestore.Collection("slots").Doc(booking.SlotID).Get(r.Context())
+		if err != nil {
+			writeError(w, http.StatusInternalServerError, "could not load bookings")
+			return
+		}
+		var slot models.Slot
+		if err := slotSnapshot.DataTo(&slot); err != nil {
+			writeError(w, http.StatusInternalServerError, "could not load bookings")
+			return
+		}
+		slot.ID = slotSnapshot.Ref.ID
+		booking.Slot = &slot
+		bookings = append(bookings, booking)
+	}
+
+	sort.Slice(bookings, func(i, j int) bool {
+		return bookings[i].CreatedAt.After(bookings[j].CreatedAt)
+	})
 
 	writeJSON(w, http.StatusOK, map[string]any{"bookings": bookings})
 }
 
 var errSlotFull = errors.New("slot full")
+var errUserNotFound = errors.New("user not found")
 
-func parseUintField(raw json.RawMessage, fieldName string) (uint, error) {
+func parseIDField(raw json.RawMessage, fieldName string) (string, error) {
 	if len(raw) == 0 {
-		return 0, fmt.Errorf("%s is required", fieldName)
+		return "", fmt.Errorf("%s is required", fieldName)
 	}
 
 	var numeric uint64
 	if err := json.Unmarshal(raw, &numeric); err == nil {
 		if numeric == 0 {
-			return 0, fmt.Errorf("%s must be greater than zero", fieldName)
+			return "", fmt.Errorf("%s must be greater than zero", fieldName)
 		}
-		return uint(numeric), nil
+		return fmt.Sprintf("%d", numeric), nil
 	}
 
 	var text string
 	if err := json.Unmarshal(raw, &text); err != nil {
-		return 0, fmt.Errorf("%s must be a number", fieldName)
+		return "", fmt.Errorf("%s must be a number", fieldName)
 	}
 
-	parsed, err := strconv.ParseUint(text, 10, 64)
-	if err != nil || parsed == 0 {
-		return 0, fmt.Errorf("%s must be a positive number", fieldName)
+	text = strings.TrimSpace(text)
+	if text == "" {
+		return "", fmt.Errorf("%s is required", fieldName)
 	}
 
-	return uint(parsed), nil
+	return text, nil
 }

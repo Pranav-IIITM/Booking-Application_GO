@@ -7,13 +7,13 @@ import (
 	"booking-backend/config"
 	"booking-backend/handlers"
 	authmw "booking-backend/middleware"
+	"cloud.google.com/go/firestore"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"gorm.io/gorm"
 )
 
-func NewRouter(cfg *config.Config, db *gorm.DB) http.Handler {
+func NewRouter(cfg *config.Config, firestoreClient *firestore.Client) http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(middleware.RequestID)
@@ -34,9 +34,9 @@ func NewRouter(cfg *config.Config, db *gorm.DB) http.Handler {
 		writeJSON(w, http.StatusMethodNotAllowed, map[string]string{"error": "method not allowed"})
 	})
 
-	slotsHandler := &handlers.SlotsHandler{DB: db}
-	usersHandler := &handlers.UsersHandler{DB: db}
-	bookingsHandler := &handlers.BookingsHandler{DB: db}
+	slotsHandler := &handlers.SlotsHandler{Firestore: firestoreClient}
+	usersHandler := &handlers.UsersHandler{Firestore: firestoreClient}
+	bookingsHandler := &handlers.BookingsHandler{Firestore: firestoreClient}
 	authMiddleware := authmw.FirebaseAuth(cfg.FirebaseAuth)
 
 	r.Get("/api/health", func(w http.ResponseWriter, r *http.Request) {

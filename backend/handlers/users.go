@@ -2,16 +2,17 @@ package handlers
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
+	"time"
 
 	"booking-backend/middleware"
 	"booking-backend/models"
-	"gorm.io/gorm"
+	"cloud.google.com/go/firestore"
+	"google.golang.org/api/iterator"
 )
 
 type UsersHandler struct {
-	DB *gorm.DB
+	Firestore *firestore.Client
 }
 
 type syncUserRequest struct {
@@ -38,40 +39,35 @@ func (h *UsersHandler) Sync(w http.ResponseWriter, r *http.Request) {
 		request.Email = middleware.Email(r.Context())
 	}
 
-	var user models.User
-	err := h.DB.Where("firebase_uid = ?", firebaseUID).First(&user).Error
-	if err == nil {
-		updates := map[string]any{}
-		if request.Name != "" && request.Name != user.Name {
-			updates["name"] = request.Name
+	users := h.Firestore.Collection("users")
+	iter := users.Where("firebase_uid", "==", firebaseUID).Limit(1).Documents(r.Context())
+	snapshot, err := iter.Next()
+	iter.Stop()
+	if err != iterator.Done {
+		if err != nil {
+			writeError(w, http.StatusInternalServerError, "could not load user")
+			return
 		}
-		if request.Email != "" && request.Email != user.Email {
-			updates["email"] = request.Email
+
+		var user models.User
+		if err := snapshot.DataTo(&user); err != nil {
+			writeError(w, http.StatusInternalServerError, "could not load user")
+			return
 		}
-		if len(updates) > 0 {
-			if err := h.DB.Model(&user).Updates(updates).Error; err != nil {
-				writeError(w, http.StatusInternalServerError, "could not update user")
-				return
-			}
-			if err := h.DB.First(&user, user.ID).Error; err != nil {
-				writeError(w, http.StatusInternalServerError, "could not reload user")
-				return
-			}
-		}
+		user.ID = snapshot.Ref.ID
 		writeJSON(w, http.StatusOK, map[string]any{"user": user})
 		return
 	}
-	if !errors.Is(err, gorm.ErrRecordNotFound) {
-		writeError(w, http.StatusInternalServerError, "could not load user")
-		return
-	}
 
-	user = models.User{
+	userRef := users.NewDoc()
+	user := models.User{
+		ID:          userRef.ID,
 		FirebaseUID: firebaseUID,
 		Name:        request.Name,
 		Email:       request.Email,
+		CreatedAt:   time.Now().UTC(),
 	}
-	if err := h.DB.Create(&user).Error; err != nil {
+	if _, err := userRef.Set(r.Context(), user); err != nil {
 		writeError(w, http.StatusInternalServerError, "could not create user")
 		return
 	}

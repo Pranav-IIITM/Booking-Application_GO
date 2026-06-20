@@ -5,8 +5,6 @@ import (
 	"net/http"
 
 	"booking-backend/config"
-	database "booking-backend/db"
-	"booking-backend/models"
 	"booking-backend/routes"
 )
 
@@ -16,19 +14,14 @@ func main() {
 		log.Fatalf("load config: %v", err)
 	}
 
-	db, err := database.Connect(cfg.DatabaseURL)
+	authClient, firestoreClient, err := config.InitFirebase()
 	if err != nil {
-		log.Fatalf("connect database: %v", err)
+		log.Fatalf("init firebase: %v", err)
 	}
+	defer firestoreClient.Close()
+	cfg.FirebaseAuth = authClient
 
-	if err := db.AutoMigrate(&models.User{}, &models.Slot{}, &models.Booking{}); err != nil {
-		log.Fatalf("auto migrate: %v", err)
-	}
-	if err := database.SeedSlots(db); err != nil {
-		log.Fatalf("seed slots: %v", err)
-	}
-
-	router := routes.NewRouter(cfg, db)
+	router := routes.NewRouter(cfg, firestoreClient)
 	addr := ":" + cfg.Port
 
 	log.Printf("backend listening on %s", addr)

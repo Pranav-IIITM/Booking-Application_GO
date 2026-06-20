@@ -5,6 +5,7 @@ import (
 	"errors"
 	"os"
 
+	"cloud.google.com/go/firestore"
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
 	"github.com/joho/godotenv"
@@ -13,7 +14,6 @@ import (
 
 type Config struct {
 	Port                    string
-	DatabaseURL             string
 	FirebaseCredentialsPath string
 	FirebaseAuth            *auth.Client
 }
@@ -23,30 +23,38 @@ func Load() (*Config, error) {
 
 	cfg := &Config{
 		Port:                    getEnv("PORT", "8080"),
-		DatabaseURL:             os.Getenv("DATABASE_URL"),
 		FirebaseCredentialsPath: os.Getenv("FIREBASE_CREDENTIALS_PATH"),
-	}
-
-	if cfg.DatabaseURL == "" {
-		return nil, errors.New("DATABASE_URL is required")
 	}
 
 	if cfg.FirebaseCredentialsPath == "" {
 		return nil, errors.New("FIREBASE_CREDENTIALS_PATH is required")
 	}
 
-	app, err := firebase.NewApp(context.Background(), nil, option.WithCredentialsFile(cfg.FirebaseCredentialsPath))
+	return cfg, nil
+}
+
+func InitFirebase() (*auth.Client, *firestore.Client, error) {
+	credentialsPath := os.Getenv("FIREBASE_CREDENTIALS_PATH")
+	if credentialsPath == "" {
+		return nil, nil, errors.New("FIREBASE_CREDENTIALS_PATH is required")
+	}
+
+	app, err := firebase.NewApp(context.Background(), nil, option.WithCredentialsFile(credentialsPath))
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	authClient, err := app.Auth(context.Background())
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
-	cfg.FirebaseAuth = authClient
 
-	return cfg, nil
+	firestoreClient, err := app.Firestore(context.Background())
+	if err != nil {
+		return nil, nil, err
+	}
+
+	return authClient, firestoreClient, nil
 }
 
 func getEnv(key, fallback string) string {
