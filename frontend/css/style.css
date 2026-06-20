@@ -95,6 +95,12 @@ select {
   color: var(--primary);
 }
 
+.nav-links a[aria-current="page"] {
+  color: var(--primary);
+  background: var(--surface-muted);
+  font-weight: 800;
+}
+
 .button {
   display: inline-flex;
   align-items: center;
