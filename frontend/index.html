@@ -3,13 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bookly | Simple Booking Platform</title>
+  <meta name="description" content="Bookly — Pick a slot, sign in with Google or email, and your reservation is confirmed instantly against a live Go backend.">
+  <title>Bookly | Book a Slot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="site-header">
     <a class="brand" href="index.html">Bookly</a>
     <nav class="nav-links" aria-label="Primary navigation">
+      <a href="index.html" aria-current="page">Home</a>
       <a href="slots.html">Slots</a>
       <a href="dashboard.html">Dashboard</a>
       <a class="button button-small" href="auth.html">Sign In</a>
@@ -19,46 +25,46 @@
   <main>
     <section class="hero">
       <div class="hero-content">
-        <p class="eyebrow">Fast appointments, clear schedules</p>
+        <p class="eyebrow">Appointments, without the back-and-forth</p>
         <h1>Bookly</h1>
-        <p class="hero-copy">Find an open slot, reserve it securely, and manage every booking from one responsive workspace.</p>
+        <p class="hero-copy">Pick a slot, sign in once with Google or email, and your reservation is locked in — backed by a Go API and verified on every request with your Firebase token.</p>
         <div class="hero-actions">
-          <a class="button" href="slots.html">Book Now</a>
-          <a class="button button-secondary" href="auth.html">Create Account</a>
+          <a class="button" href="slots.html">View Open Slots</a>
+          <a class="button button-secondary" href="auth.html">Sign In to Book</a>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="section-heading">
-        <p class="eyebrow">Why teams use it</p>
-        <h2>Booking tools that stay out of the way</h2>
+        <p class="eyebrow">How it works</p>
+        <h2>Three moving parts, zero friction</h2>
       </div>
       <div class="feature-grid">
         <article class="feature-card">
           <span class="feature-icon" aria-hidden="true">01</span>
-          <h3>Live Slot Availability</h3>
-          <p>Fetches current booking slots from your Go backend and keeps the interface focused on real availability.</p>
+          <h3>Real-time Slot Availability</h3>
+          <p>Every page load hits the Go backend directly. You always see what's actually open — no stale cache, no phantom slots that were already taken.</p>
         </article>
         <article class="feature-card">
           <span class="feature-icon" aria-hidden="true">02</span>
-          <h3>Firebase Sign-In</h3>
-          <p>Email, password, and Google authentication are wired with Firebase Auth and ready for protected API calls.</p>
+          <h3>Firebase Auth, done right</h3>
+          <p>Sign in with email and password, or skip the form entirely with Google. Either way, your Firebase ID token rides along on every API call so the backend knows exactly who you are.</p>
         </article>
         <article class="feature-card">
           <span class="feature-icon" aria-hidden="true">03</span>
-          <h3>Personal Dashboard</h3>
-          <p>Logged-in users can review bookings fetched with a Firebase ID token attached to every request.</p>
+          <h3>Your bookings, all in one place</h3>
+          <p>Head to the dashboard to see everything you've reserved. Each card pulls live from the API — same token, same user, same source of truth across every session.</p>
         </article>
       </div>
     </section>
 
     <section class="cta-band">
       <div>
-        <p class="eyebrow">Ready when your backend is</p>
-        <h2>Connect your API and start booking.</h2>
+        <p class="eyebrow">You're two clicks away</p>
+        <h2>Sign in and grab a slot before it's gone.</h2>
       </div>
-      <a class="button" href="booking.html">Book Now</a>
+      <a class="button" href="slots.html">Browse Slots</a>
     </section>
   </main>
 </body>

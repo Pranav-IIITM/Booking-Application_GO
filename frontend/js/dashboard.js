@@ -5,12 +5,100 @@ import { getFreshIdToken, logoutUser, waitForAuthUser } from "./firebase-config.
 const bookingsList = document.querySelector("#bookings-list");
 const refreshButton = document.querySelector("#refresh-bookings");
 const logoutButton = document.querySelector("#logout-button");
+const profileLogoutButton = document.querySelector("#profile-logout");
 const statusMessage = document.querySelector("#dashboard-status");
+
+// ── Profile helpers ──────────────────────────────────────────
+
+const PROFILE_KEY = "booklyUserProfile";
+
+/** Persist user profile data to localStorage. */
+function saveProfile(user) {
+  const profile = {
+    name: user.displayName || "",
+    email: user.email || ""
+  };
+  localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+  return profile;
+}
+
+/** Retrieve stored profile from localStorage. */
+function loadProfile() {
+  try {
+    const raw = localStorage.getItem(PROFILE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Clear stored profile from localStorage. */
+function clearProfile() {
+  localStorage.removeItem(PROFILE_KEY);
+}
+
+/**
+ * Generate initials from a full name (up to 2 characters).
+ * Falls back to the first character of the email if no name is set.
+ */
+function getInitials(name, email) {
+  if (name && name.trim()) {
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+    return parts[0].slice(0, 2).toUpperCase();
+  }
+  if (email) {
+    return email[0].toUpperCase();
+  }
+  return "?";
+}
+
+/**
+ * Derive a consistent HSL background color from a string (name or email).
+ * Uses a simple DJB2-style hash so the same user always gets the same color.
+ */
+function avatarColor(str) {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) + hash) ^ str.charCodeAt(i);
+  }
+  // Keep hue in the 180-340 range (cool/teal to purple) for contrast with white text.
+  const hue = Math.abs(hash) % 160 + 180;
+  return `hsl(${hue}, 55%, 38%)`;
+}
+
+/** Render the profile card if a profile is available. */
+function renderProfile(profile) {
+  const section = document.querySelector("#user-profile");
+  const avatarEl = document.querySelector("#profile-avatar");
+  const nameEl = document.querySelector("#profile-name");
+  const emailEl = document.querySelector("#profile-email");
+
+  if (!profile || (!profile.name && !profile.email)) {
+    return;
+  }
+
+  const initials = getInitials(profile.name, profile.email);
+  const color = avatarColor(profile.name || profile.email);
+
+  avatarEl.textContent = initials;
+  avatarEl.style.background = color;
+  nameEl.textContent = profile.name || "Signed-in user";
+  emailEl.textContent = profile.email || "";
+
+  section.hidden = false;
+}
+
+// ── Status helpers ───────────────────────────────────────────
 
 function setStatus(message, type = "") {
   statusMessage.textContent = message;
   statusMessage.className = `status-message ${type}`.trim();
 }
+
+// ── Booking helpers ──────────────────────────────────────────
 
 function normalizeBookings(payload) {
   if (Array.isArray(payload)) {
@@ -77,6 +165,14 @@ function renderBookings(bookings) {
   bookingsList.appendChild(fragment);
 }
 
+// ── Auth & data loading ──────────────────────────────────────
+
+async function handleLogout() {
+  clearProfile();
+  await logoutUser();
+  window.location.href = "auth.html";
+}
+
 async function fetchBookings() {
   refreshButton.disabled = true;
   bookingsList.innerHTML = "";
@@ -89,6 +185,10 @@ async function fetchBookings() {
       window.location.href = "auth.html";
       return;
     }
+
+    // Persist and render profile on every load so it stays fresh.
+    const profile = saveProfile(user);
+    renderProfile(profile);
 
     const token = await getFreshIdToken();
     const response = await fetch(`${API_BASE}/api/bookings`, {
@@ -113,10 +213,17 @@ async function fetchBookings() {
   }
 }
 
+// ── Event wiring ─────────────────────────────────────────────
+
 refreshButton.addEventListener("click", fetchBookings);
-logoutButton.addEventListener("click", async () => {
-  await logoutUser();
-  window.location.href = "auth.html";
-});
+logoutButton.addEventListener("click", handleLogout);
+profileLogoutButton.addEventListener("click", handleLogout);
+
+// Show cached profile immediately while Firebase initialises (avoids flash).
+const cachedProfile = loadProfile();
+if (cachedProfile) {
+  renderProfile(cachedProfile);
+}
 
 fetchBookings();
+
