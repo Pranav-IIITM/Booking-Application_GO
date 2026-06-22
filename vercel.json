@@ -1,16 +1,8 @@
 {
-  "buildCommand": "cd backend && go build -o server",
-  "outputDirectory": "backend",
-  "functions": {
-    "backend/**/*.go": {
-      "runtime": "vercel-go@0.0.6"
-    }
-  },
-  "routes": [
+  "builds": [
     {
-      "src": "\/(.*)",
-      "dest": "\/server",
-      "methods": ["GET", "POST", "OPTIONS", "PUT", "DELETE"]
+      "src": "frontend/**",
+      "use": "@vercel/static"
     }
   ]
 }

@@ -1,4 +1,4 @@
-const API_BASE = "https://bookly-go.up.railway.app";
+const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
 import { getFreshIdToken, waitForAuthUser } from "./firebase-config.js";
 
