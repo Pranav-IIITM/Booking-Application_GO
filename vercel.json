@@ -3,7 +3,7 @@
   "outputDirectory": "backend",
   "functions": {
     "backend/**/*.go": {
-      "runtime": "go"
+      "runtime": "vercel-go@0.0.6"
     }
   },
   "routes": [
